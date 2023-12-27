@@ -148,7 +148,7 @@ public class chat_server_login extends javax.swing.JFrame {
             chat_server serverOpen = new chat_server();
             serverOpen.setVisible(true);
 
-        } else {
+        } else  {
             // Doğrulama başarısızsa kullanıcıya hata mesajı göster
             JOptionPane.showMessageDialog(this, "Kullanıcı adı veya şifre hatalı!");
         }

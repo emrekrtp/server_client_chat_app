@@ -49,7 +49,7 @@ public class chats_client2_login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Client Login");
+        jLabel1.setText("Client 2 Login");
 
         jTextField1.setText("Kullanıcı Adı ");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -139,8 +139,8 @@ public class chats_client2_login extends javax.swing.JFrame {
         if (kullaniciAdi.equals(dogruKullaniciAdi) && girilenSifre.equals(dogruSifre)) {
             JOptionPane.showMessageDialog(this, "Giriş başarılı!");
             dispose(); // Giriş penceresini kapat
-            chats_client clientOpen = new chats_client();
-            clientOpen.setVisible(true); // Client penceresini aç
+            chats_client2 clientOpen2 = new chats_client2();
+            clientOpen2.setVisible(true); // Client penceresini aç
         } else {
             JOptionPane.showMessageDialog(this, "Kullanıcı adı veya şifre hatalı!");
         }

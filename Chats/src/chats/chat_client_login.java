@@ -133,18 +133,23 @@ public class chat_client_login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         String dogruKullaniciAdi = "admin";
+        String client2KullaniciAdi = "master";
         String dogruSifre = "12345"; // Örnek olarak 'admin' şifresini char dizisi olarak tanımladım
 
         String kullaniciAdi = jTextField1.getText();
         String girilenSifre = jTextField2.getText();
 
-        // Şifreyi char dizisinden String'e dönüştürme
         if (kullaniciAdi.equals(dogruKullaniciAdi) && sifre.equals(dogruSifre)) {
             JOptionPane.showMessageDialog(this, "Giriş başarılı!");
             dispose(); // Giriş penceresini kapat
             chats_client clientOpen = new chats_client();
             clientOpen.setVisible(true); // Client penceresini aç
 
+        } else if (kullaniciAdi.equals(client2KullaniciAdi) && sifre.equals(dogruSifre)) {
+            JOptionPane.showMessageDialog(this, "Giriş başarılı!");
+            dispose(); // Giriş penceresini kapat
+            chats_client2 clientOpen2 = new chats_client2();
+            clientOpen2.setVisible(true); // Client penceresini aç
         } else {
             JOptionPane.showMessageDialog(this, "Kullanıcı adı veya şifre hatalı!");
         }

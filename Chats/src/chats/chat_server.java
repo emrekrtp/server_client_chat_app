@@ -1,5 +1,6 @@
 package chats;
 
+import com.sun.source.tree.WhileLoopTree;
 import database.Logger;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -15,9 +16,12 @@ public class chat_server extends javax.swing.JFrame {
 
     // Sunucu, soket ve veri giriş/çıkış akışları tanımlanıyor
     static ServerSocket ss;
-    static Socket s;
-    static DataInputStream din;
-    static DataOutputStream dout;
+    static Socket s1;
+    static Socket s2;
+    static DataInputStream din1;
+    static DataOutputStream dout1;
+    static DataInputStream din2;
+    static DataOutputStream dout2;
     private static javax.swing.JTextArea msg_area;
     // Variables declaration - do not modify                     
     private javax.swing.JLabel jLabel1;
@@ -43,45 +47,59 @@ public class chat_server extends javax.swing.JFrame {
         });
         // İstemciden gelen mesajları dinlemek için bir döngü
         String msgin = "";
-        try {
+        while (true) {
+            try {
 
-            while (!msgin.equals("exit")) {
-                msgin = din.readUTF();  //clientten gelen mesajı okuma
-                msg_area.setText(msg_area.getText().trim() + "\n Client :\t" + msgin);  // clientten gelen mesajı görüntüleme
+                while (!msgin.equals("exit")) {
+                    msgin = din1.readUTF();  //clientten gelen mesajı okuma
+                    msg_area.setText(msg_area.getText().trim() + "\n Client :\t" + msgin);  // clientten gelen mesajı görüntüleme
+                }
+
+            } catch (IOException e) {
+                System.out.println("Hata oluştu -> " + e);
             }
-
-        } catch (IOException e) {
-            System.out.println("Hata oluştu -> " + e);
         }
+
     }
 
     // Sunucu soketi oluşturuluyor ve bağlantı bekleniyor
     private void serverSocket() {
+
         try {
             ss = new ServerSocket(1201); //server 1201 port ile başlıyor
             System.out.println("Server başlatıldı client bekleniyor...");
-            s = ss.accept();  // server porta gelen bağlantıyı kabul ediyor
+            s1 = ss.accept();// server porta gelen bağlantıyı kabul ediyor
+            s2 = ss.accept();// server porta gelen bağlantıyı kabul ediyor
             System.out.println("client bağlandı");
-            din = new DataInputStream(s.getInputStream());
-            dout = new DataOutputStream(s.getOutputStream());
+
+            DataInputStream din1 = new DataInputStream(s1.getInputStream());
+            DataOutputStream dout1 = new DataOutputStream(s1.getOutputStream());
+            DataInputStream din2 = new DataInputStream(s2.getInputStream());
+            DataOutputStream dout2 = new DataOutputStream(s2.getOutputStream());
 
             // İstemciden gelen mesajları dinlemek için bir thread başlatılıyor
-            Thread messageReceiverThread = new Thread(() -> {
+            Thread messageReceiverThread1 = new Thread(() -> {
                 try {
                     String msgin;
-                    while (true) {
-                        msgin = din.readUTF(); // İstemciden gelen mesajı oku
-                        if (msgin.equals("exit")) {
-                            break; // İstemci 'exit' mesajı gönderdiğinde döngüyü kır
-                        }
-                        // Gelen mesajı ekranda göster
-                        displayMessageFromClient(msgin);
+                    while ((msgin = din1.readUTF()) != null) {
+                        displayMessageFromClient(msgin, "Client 1");
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     System.out.println("Hata oluştu -> " + e);
                 }
             });
-            messageReceiverThread.start();  // Thread'i başlat
+            messageReceiverThread1.start();
+            Thread messageReceiverThread2 = new Thread(() -> {
+                try {
+                    String msgin;
+                    while ((msgin = din2.readUTF()) != null) {
+                        displayMessageFromClient(msgin, "Client 2");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Hata oluştu -> " + e);
+                }
+            });
+            messageReceiverThread2.start();  // Thread'i başlat
 
         } catch (IOException e) {
             System.out.println("Hata oluştu -> " + e);
@@ -89,9 +107,9 @@ public class chat_server extends javax.swing.JFrame {
     }
 
     // İstemciden gelen mesajı ekrana göstermek için bir metot
-    private void displayMessageFromClient(String message) {
+    private void displayMessageFromClient(String message, String clientName) {
         java.awt.EventQueue.invokeLater(() -> {
-            msg_area.append("Client: " + message + "\n");
+            msg_area.append(clientName + ": " + message + "\n");
         });
     }
 
@@ -183,11 +201,13 @@ public class chat_server extends javax.swing.JFrame {
 
         try {
             String msgout = msg_text.getText().trim();
-            dout.writeUTF(msgout); //serverdan cliente mesaj gönderme
+            dout1.writeUTF(msgout); //serverdan cliente mesaj gönderme
+            dout2.writeUTF(msgout);//servrden cliente mesaj gönderme
             Logger.logMessage(msgout, "server");
         } catch (IOException e) {
             System.out.println("Hata oluştu -> " + e);
         }
+
 
     }//GEN-LAST:event_msg_sendActionPerformed
 

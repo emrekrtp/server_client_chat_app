@@ -40,22 +40,11 @@ public class chats_client extends javax.swing.JFrame {
             new chats_client().setVisible(true);  // İstemci penceresini görünür yap
         });
 
-        try {
-            s = new Socket("127.0.0.1", 1201); // Sunucuya bağlanmak için soket oluştur
-            din = new DataInputStream(s.getInputStream());
-            dout = new DataOutputStream(s.getOutputStream());
-            String msgin = "";
-            while (!msgin.equals("exit")) {
-                msgin = din.readUTF();
-                msg_area.setText(msg_area.getText().trim() + "\n Server :\t" + msgin);
-            }
-        } catch (IOException e) {
-            System.out.println("Hata oluştu -> " + e);
-        }
     }
 
     // İstemciden gelen mesajları dinlemek için metot
     private void receiveMessages() {
+        /*
         try {
             String msgin;
             while (true) {
@@ -65,6 +54,22 @@ public class chats_client extends javax.swing.JFrame {
             }
         } catch (IOException e) {
             System.out.println("Hata oluştu -> " + e);
+        }
+         */
+        try {
+            Thread messageReceiverThread1 = new Thread(() -> {
+                try {
+                    String msgin;
+                    while (true) {
+                        msgin = din.readUTF();
+                        addMessageToTextArea("Server : " + msgin);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Hata oluştu -> " + e);
+                }
+            });
+            messageReceiverThread1.start();
+        } catch (Exception e) {
         }
     }
 

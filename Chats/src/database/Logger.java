@@ -13,18 +13,25 @@ public class Logger {
         String url = "jdbc:sqlite:C://Users/emrek/Desktop/deneme/chat_app.sqlite";
 
         try (Connection conn = DriverManager.getConnection(url)) {
-            String sql = "INSERT INTO msg_database (msg_server, msg_client, msg_datetime) VALUES (?, ?, ?)";
+
+            String sql = "INSERT INTO msg_database (msg_server, msg_client, msg_client_2, msg_datetime) VALUES (?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 if (senderType.equalsIgnoreCase("server")) {
                     pstmt.setString(1, message);
                     pstmt.setString(2, "");
+                    pstmt.setString(3, "");
                 } else if (senderType.equalsIgnoreCase("client")) {
                     pstmt.setString(1, "");
                     pstmt.setString(2, message);
+                    pstmt.setString(3, "");
+                } else if (senderType.equalsIgnoreCase("client_2")) {
+                    pstmt.setString(1, "");
+                    pstmt.setString(2, "");
+                    pstmt.setString(3, message);
                 }
 
-                pstmt.setString(3, LocalDateTime.now().toString());
+                pstmt.setString(4, LocalDateTime.now().toString());
                 pstmt.executeUpdate();
                 System.out.println("Mesaj başarıyla loglandı.");
             }
@@ -37,5 +44,6 @@ public class Logger {
         // Örnek kullanım
         logMessage("Bu bir server mesajıdır.", "server");
         logMessage("Bu bir client mesajıdır.", "client");
+        logMessage("Bu bir client 2 mesajıdır.", "client_2");
     }
 }
