@@ -44,18 +44,7 @@ public class chats_client extends javax.swing.JFrame {
 
     // İstemciden gelen mesajları dinlemek için metot
     private void receiveMessages() {
-        /*
-        try {
-            String msgin;
-            while (true) {
-                msgin = din.readUTF(); // Sunucudan gelen mesajı oku
-                // Gelen mesajı JTextArea'ya ekle
-                addMessageToTextArea("Server: " + msgin);
-            }
-        } catch (IOException e) {
-            System.out.println("Hata oluştu -> " + e);
-        }
-         */
+
         try {
             Thread messageReceiverThread1 = new Thread(() -> {
                 try {
@@ -197,6 +186,7 @@ public class chats_client extends javax.swing.JFrame {
             String msgout = msg_text.getText().trim();
             dout.writeUTF(msgout); //serverdan cliente mesaj gönderme
             Logger.logMessage(msgout, "client");
+            msg_text.setText("");
         } catch (Exception e) {
             System.out.println("Hata oluştu -> " + e);
         }

@@ -133,8 +133,8 @@ public class chat_client_login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         String dogruKullaniciAdi = "admin";
+        String dogruSifre = "12345";
         String client2KullaniciAdi = "master";
-        String dogruSifre = "12345"; // Örnek olarak 'admin' şifresini char dizisi olarak tanımladım
 
         String kullaniciAdi = jTextField1.getText();
         String girilenSifre = jTextField2.getText();

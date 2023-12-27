@@ -68,18 +68,17 @@ public class chat_server extends javax.swing.JFrame {
         try {
             ss = new ServerSocket(1201); //server 1201 port ile başlıyor
             System.out.println("Server başlatıldı client bekleniyor...");
-            s1 = ss.accept();// server porta gelen bağlantıyı kabul ediyor
-            s2 = ss.accept();// server porta gelen bağlantıyı kabul ediyor
-            System.out.println("client bağlandı");
-
-            DataInputStream din1 = new DataInputStream(s1.getInputStream());
-            DataOutputStream dout1 = new DataOutputStream(s1.getOutputStream());
-            DataInputStream din2 = new DataInputStream(s2.getInputStream());
-            DataOutputStream dout2 = new DataOutputStream(s2.getOutputStream());
+            s1 = ss.accept();
+            System.out.println("client 1 bağlandı");
+            dout1 = new DataOutputStream(s1.getOutputStream());
+            s2 = ss.accept();
+            System.out.println("client 2 bağlandı");
+            dout2 = new DataOutputStream(s2.getOutputStream());
 
             // İstemciden gelen mesajları dinlemek için bir thread başlatılıyor
             Thread messageReceiverThread1 = new Thread(() -> {
                 try {
+                    DataInputStream din1 = new DataInputStream(s1.getInputStream());
                     String msgin;
                     while ((msgin = din1.readUTF()) != null) {
                         displayMessageFromClient(msgin, "Client 1");
@@ -91,6 +90,7 @@ public class chat_server extends javax.swing.JFrame {
             messageReceiverThread1.start();
             Thread messageReceiverThread2 = new Thread(() -> {
                 try {
+                    DataInputStream din2 = new DataInputStream(s2.getInputStream());
                     String msgin;
                     while ((msgin = din2.readUTF()) != null) {
                         displayMessageFromClient(msgin, "Client 2");
@@ -108,9 +108,11 @@ public class chat_server extends javax.swing.JFrame {
 
     // İstemciden gelen mesajı ekrana göstermek için bir metot
     private void displayMessageFromClient(String message, String clientName) {
+
         java.awt.EventQueue.invokeLater(() -> {
             msg_area.append(clientName + ": " + message + "\n");
         });
+
     }
 
     // Metin alanına odaklandığında veya tıklandığında içeriği temizlemek için olay dinleyicileri bağlanıyor
@@ -201,9 +203,16 @@ public class chat_server extends javax.swing.JFrame {
 
         try {
             String msgout = msg_text.getText().trim();
-            dout1.writeUTF(msgout); //serverdan cliente mesaj gönderme
-            dout2.writeUTF(msgout);//servrden cliente mesaj gönderme
+
+            // `dout` değişkeninin değerini `logMessage` metoduna gönderin
             Logger.logMessage(msgout, "server");
+
+            // Mesajları gönderin
+            dout1.writeUTF(msgout);
+            dout2.writeUTF(msgout);
+
+            // Mesaj metnini temizleyin
+            msg_text.setText("");
         } catch (IOException e) {
             System.out.println("Hata oluştu -> " + e);
         }

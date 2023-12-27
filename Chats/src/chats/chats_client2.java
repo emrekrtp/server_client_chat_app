@@ -63,7 +63,8 @@ public class chats_client2 extends javax.swing.JFrame {
             }
         } catch (IOException e) {
             System.out.println("Hata oluştu -> " + e);
-        }try {
+        }
+        try {
             Thread messageReceiverThread1 = new Thread(() -> {
                 try {
                     String msgin;
@@ -175,6 +176,7 @@ public class chats_client2 extends javax.swing.JFrame {
             String msgout = msg_text.getText().trim();
             dout.writeUTF(msgout); //serverdan cliente mesaj gönderme
             Logger.logMessage(msgout, "client_2");
+            msg_text.setText("");
         } catch (Exception e) {
             System.out.println("Hata oluştu -> " + e);
         }
