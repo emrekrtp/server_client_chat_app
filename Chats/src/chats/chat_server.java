@@ -1,5 +1,6 @@
 package chats;
 
+import database.Logger;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
@@ -183,6 +184,7 @@ public class chat_server extends javax.swing.JFrame {
         try {
             String msgout = msg_text.getText().trim();
             dout.writeUTF(msgout); //serverdan cliente mesaj gönderme
+            Logger.logMessage(msgout, "server");
         } catch (IOException e) {
             System.out.println("Hata oluştu -> " + e);
         }
