@@ -52,7 +52,7 @@ public class chat_server extends javax.swing.JFrame {
 
                 while (!msgin.equals("exit")) {
                     msgin = din1.readUTF();  //clientten gelen mesajı okuma
-                    msg_area.setText(msg_area.getText().trim() + "\n Client :\t" + msgin);  // clientten gelen mesajı görüntüleme
+                    msg_area.setText(msg_area.getText().trim() + "\n Client :\n" + msgin);  // clientten gelen mesajı görüntüleme
                 }
 
             } catch (IOException e) {
@@ -210,6 +210,7 @@ public class chat_server extends javax.swing.JFrame {
             // Mesajları gönderin
             dout1.writeUTF(msgout);
             dout2.writeUTF(msgout);
+            msg_area.setText(msg_area.getText().trim() + "Server : " + msgout + "\n");
 
             // Mesaj metnini temizleyin
             msg_text.setText("");
