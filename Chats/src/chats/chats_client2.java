@@ -175,7 +175,7 @@ public class chats_client2 extends javax.swing.JFrame {
         try {
             String msgin = "";
             String msgout = msg_text.getText().trim();
-            msg_area.setText(msg_area.getText().trim() + "\n Client 2 : " + msgout);
+            msg_area.setText(msg_area.getText().trim() + "\n Client 2 : " + msgout + "\n");
             dout.writeUTF(msgout); //serverdan cliente mesaj gönderme
             Logger.logMessage(msgout, "client_2");
             msg_text.setText("");

@@ -210,7 +210,7 @@ public class chat_server extends javax.swing.JFrame {
             // Mesajları gönderin
             dout1.writeUTF(msgout);
             dout2.writeUTF(msgout);
-            msg_area.setText(msg_area.getText().trim() + "Server : " + msgout + "\n");
+            msg_area.setText(msg_area.getText().trim() + "\nServer : " + msgout + "\n");
 
             // Mesaj metnini temizleyin
             msg_text.setText("");
